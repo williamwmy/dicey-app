@@ -47,7 +47,7 @@ function App() {
   }, [rollHistory]);
 
   const handleRoll = (rollResult) => {
-    setRollHistory(prev => [rollResult, ...prev].slice(0, 100));
+    setRollHistory(prev => [rollResult, ...prev].slice(0, 10));
   };
 
   const handleSaveCustomDice = (customDice) => {
@@ -82,24 +82,24 @@ function App() {
     setRollHistory([]);
   };
 
-  const version = "1.0.0";
+  const version = "1.1.0";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-      <div className="container mx-auto px-4 py-4 max-w-6xl">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+      <div className="container mx-auto px-4 py-4 max-w-6xl h-full flex flex-col">
         <header className="text-center mb-4">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg">
             🎲 Dicey
           </h1>
         </header>
 
-        <div className="mb-4">
-          <div className="flex justify-center bg-white/10 backdrop-blur-sm rounded-full p-2 max-w-md mx-auto">
+        <div className="mb-4 flex-shrink-0">
+          <div className="flex justify-center bg-white/10 backdrop-blur-sm rounded-full p-1 max-w-sm mx-auto overflow-hidden">
             <button
               onClick={() => setActiveTab('roll')}
-              className={`px-6 py-3 font-semibold rounded-full transition-all duration-300 ${
+              className={`px-3 py-2 font-semibold rounded-full transition-all duration-300 text-sm ${
                 activeTab === 'roll'
-                  ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg transform scale-105'
+                  ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >
@@ -107,9 +107,9 @@ function App() {
             </button>
             <button
               onClick={() => setActiveTab('settings')}
-              className={`px-6 py-3 font-semibold rounded-full transition-all duration-300 ${
+              className={`px-3 py-2 font-semibold rounded-full transition-all duration-300 text-sm ${
                 activeTab === 'settings'
-                  ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg transform scale-105'
+                  ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >
@@ -117,9 +117,9 @@ function App() {
             </button>
             <button
               onClick={() => setActiveTab('custom')}
-              className={`px-6 py-3 font-semibold rounded-full transition-all duration-300 ${
+              className={`px-3 py-2 font-semibold rounded-full transition-all duration-300 text-sm ${
                 activeTab === 'custom'
-                  ? 'bg-gradient-to-r from-green-500 to-teal-600 text-white shadow-lg transform scale-105'
+                  ? 'bg-gradient-to-r from-green-500 to-teal-600 text-white shadow-lg'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >
@@ -127,9 +127,9 @@ function App() {
             </button>
             <button
               onClick={() => setActiveTab('history')}
-              className={`px-6 py-3 font-semibold rounded-full transition-all duration-300 ${
+              className={`px-3 py-2 font-semibold rounded-full transition-all duration-300 text-sm ${
                 activeTab === 'history'
-                  ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg transform scale-105'
+                  ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >
@@ -138,7 +138,7 @@ function App() {
           </div>
         </div>
 
-        <div className="min-h-[60vh]">
+        <div className="flex-1 overflow-y-auto">
           {activeTab === 'roll' && (
             <RollInterface
               diceCount={diceCount}

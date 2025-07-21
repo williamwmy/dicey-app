@@ -126,8 +126,16 @@ const RollInterface = ({
           {(isRolling || results.length > 0) ? (
             <>
               
-              {/* Fixed height dice area */}
-              <div className="flex flex-wrap gap-6 justify-center min-h-[120px] items-center">
+              {/* Adaptive dice area layout */}
+              <div className={`gap-4 justify-items-center min-h-[120px] items-center mx-auto ${
+                diceCount === 1 
+                  ? 'flex justify-center' 
+                  : diceCount === 2 
+                  ? 'flex justify-center gap-8' 
+                  : diceCount === 4 
+                  ? 'grid grid-cols-2 max-w-xs gap-6' 
+                  : 'grid grid-cols-3 max-w-xs sm:max-w-md sm:gap-6'
+              }`}>
                 {isRolling ? (
                   // Show loading dice while rolling (only for unlocked dice)
                   Array.from({ length: diceCount }).map((_, index) => (
@@ -142,6 +150,7 @@ const RollInterface = ({
                           sides={selectedCustomDice ? selectedCustomDice.sides.length : diceSides}
                           customValues={results[index]?.customValues}
                           index={index}
+                          diceCount={diceCount}
                         />
                         {/* Lock indicator */}
                         <div className="absolute inset-0 bg-red-500/30 rounded-xl border-2 border-red-400"></div>
@@ -153,9 +162,9 @@ const RollInterface = ({
                       // Show question mark for unlocked dice being rolled
                       <div
                         key={index}
-                        className="w-20 h-20 bg-gradient-to-br from-gray-400 to-gray-600 rounded-xl flex items-center justify-center shadow-2xl border-2 border-white/20 animate-pulse"
+                        className={`${diceCount <= 2 ? 'w-24 h-24' : 'w-20 h-20'} bg-gradient-to-br from-gray-400 to-gray-600 rounded-xl flex items-center justify-center shadow-2xl border-2 border-white/20 animate-pulse`}
                       >
-                        <div className="text-3xl font-bold text-white animate-bounce" style={{ animationDelay: `${index * 100}ms` }}>
+                        <div className={`${diceCount <= 2 ? 'text-4xl' : 'text-3xl'} font-bold text-white animate-bounce`} style={{ animationDelay: `${index * 100}ms` }}>
                           ?
                         </div>
                       </div>
@@ -178,6 +187,7 @@ const RollInterface = ({
                         sides={selectedCustomDice ? selectedCustomDice.sides.length : diceSides}
                         customValues={result.customValues}
                         index={index}
+                        diceCount={diceCount}
                       />
                       
                       {/* Lock indicator */}

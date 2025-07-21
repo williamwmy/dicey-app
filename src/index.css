@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Lock screen scrolling and make status bar area black */
+html, body {
+  overflow: hidden;
+  height: 100%;
+  background-color: #000000;
+}
+
+#root {
+  height: 100vh;
+  overflow: hidden;
+}
+
 /* 3D Dice Animation Classes */
 .perspective-1000 {
   perspective: 1000px;

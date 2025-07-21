@@ -1,4 +1,4 @@
-const SimpleDice = ({ value, sides = 6, customValues = null, index = 0 }) => {
+const SimpleDice = ({ value, sides = 6, customValues = null, index = 0, diceCount = 2 }) => {
   const diceColors = [
     'from-red-400 to-red-600',
     'from-blue-400 to-blue-600', 
@@ -23,7 +23,7 @@ const SimpleDice = ({ value, sides = 6, customValues = null, index = 0 }) => {
     // For custom values, always show the custom text/values
     if (customValues) {
       return (
-        <div className="text-2xl font-bold text-white drop-shadow-lg">
+        <div className={`${textSize} font-bold text-white drop-shadow-lg`}>
           {getDiceDisplay()}
         </div>
       );
@@ -55,7 +55,7 @@ const SimpleDice = ({ value, sides = 6, customValues = null, index = 0 }) => {
           {dotPositions[value]?.map((position, dotIndex) => (
             <div
               key={dotIndex}
-              className={`absolute w-3 h-3 bg-white rounded-full shadow-lg ${positions[position]}`}
+              className={`absolute ${dotSize} bg-white rounded-full shadow-lg ${positions[position]}`}
             />
           ))}
         </div>
@@ -64,15 +64,20 @@ const SimpleDice = ({ value, sides = 6, customValues = null, index = 0 }) => {
 
     // For all other dice types (D4, D8, D10, D12, D20, D100), show numbers
     return (
-      <div className="text-2xl font-bold text-white drop-shadow-lg">
+      <div className={`${textSize} font-bold text-white drop-shadow-lg`}>
         {getDiceDisplay()}
       </div>
     );
   };
 
+  // Larger dice for 1-2 dice
+  const diceSize = (diceCount <= 2) ? 'w-24 h-24' : 'w-20 h-20';
+  const textSize = (diceCount <= 2) ? 'text-3xl' : 'text-2xl';
+  const dotSize = (diceCount <= 2) ? 'w-4 h-4' : 'w-3 h-3';
+
   return (
     <div className={`
-      w-20 h-20 bg-gradient-to-br ${diceColor} rounded-xl 
+      ${diceSize} bg-gradient-to-br ${diceColor} rounded-xl 
       flex items-center justify-center shadow-2xl border-2 border-white/20
       hover:shadow-3xl hover:scale-105 transition-all duration-300
     `}>
