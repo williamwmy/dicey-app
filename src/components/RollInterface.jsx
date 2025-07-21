@@ -105,7 +105,7 @@ const RollInterface = ({
       {/* Main Dice Rolling Area - Fixed height container */}
       <div className="mb-8">
         {/* Roll Button */}
-        <div className="mb-8">
+        <div className="mb-8 mt-4">
           <button
             onClick={rollDice}
             disabled={isRolling || (results.length > 0 && lockedDice.length === diceCount)}
@@ -115,9 +115,6 @@ const RollInterface = ({
             <span className="relative z-10 drop-shadow-lg">
               {isRolling ? 'Kaster...' : 'KAST TERNINGER'}
             </span>
-            {isRolling && (
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-300 rounded-full animate-pulse"></div>
-            )}
           </button>
         </div>
 

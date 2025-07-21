@@ -47,7 +47,7 @@ function App() {
   }, [rollHistory]);
 
   const handleRoll = (rollResult) => {
-    setRollHistory(prev => [rollResult, ...prev].slice(0, 10));
+    setRollHistory(prev => [rollResult, ...prev].slice(0, 12));
   };
 
   const handleSaveCustomDice = (customDice) => {
@@ -82,7 +82,7 @@ function App() {
     setRollHistory([]);
   };
 
-  const version = "1.1.0";
+  const version = "1.2.0";
 
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
