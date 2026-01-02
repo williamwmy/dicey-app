@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 const DiceSettings = ({ 
   diceCount, 
   setDiceCount, 

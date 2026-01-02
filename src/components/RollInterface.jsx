@@ -11,24 +11,34 @@ const RollInterface = ({
   const [isRolling, setIsRolling] = useState(false);
   const [revealedDice, setRevealedDice] = useState([]);
   const [lockedDice, setLockedDice] = useState([]);
+  const [rollCount, setRollCount] = useState(0);
 
-  const rollDice = () => {
-    // Don't allow rolling if all dice are locked (except on first roll)
-    if (results.length > 0 && lockedDice.length === diceCount) {
+  const rollDice = (forceRollAll = false) => {
+    // Don't allow rolling if all dice are locked (except on first roll or force roll)
+    if (!forceRollAll && results.length > 0 && lockedDice.length === diceCount) {
       return;
     }
-    
+
     setIsRolling(true);
     setRevealedDice([]);
-    
-    // If we have existing results, only re-roll unlocked dice
+
+    // If forceRollAll is true, clear locks and reset counter
+    if (forceRollAll) {
+      setLockedDice([]);
+      setRollCount(1); // Reset to 1 for the new round
+    } else {
+      // Increment roll count for regular rolls
+      setRollCount(prev => prev + 1);
+    }
+
+    // If we have existing results, only re-roll unlocked dice (unless forceRollAll)
     const newResults = [...results];
     const dicesToRoll = [];
-    
+
     for (let i = 0; i < diceCount; i++) {
-      if (!lockedDice.includes(i) || results.length === 0) {
+      if (forceRollAll || !lockedDice.includes(i) || results.length === 0) {
         dicesToRoll.push(i);
-        
+
         // Generate new value for this die
         if (selectedCustomDice) {
           const randomIndex = Math.floor(Math.random() * selectedCustomDice.sides.length);
@@ -47,7 +57,7 @@ const RollInterface = ({
         }
       }
     }
-    
+
     // If first roll, create all dice
     if (results.length === 0) {
       setResults(newResults.slice(0, diceCount));
@@ -55,7 +65,7 @@ const RollInterface = ({
     } else {
       setResults(newResults);
     }
-    
+
     // Reveal dice one by one (only the ones being rolled)
     setTimeout(() => {
       let rollIndex = 0;
@@ -64,12 +74,12 @@ const RollInterface = ({
           setTimeout(() => {
             setRevealedDice(prev => [...prev, i]);
             rollIndex++;
-            
+
             // If this is the last die being rolled, finish rolling
             if (rollIndex === dicesToRoll.length) {
               setTimeout(() => {
                 setIsRolling(false);
-                
+
                 if (onRoll) {
                   onRoll({
                     results: newResults.slice(0, diceCount),
@@ -104,10 +114,10 @@ const RollInterface = ({
     <div className="max-w-4xl mx-auto text-center">
       {/* Main Dice Rolling Area - Fixed height container */}
       <div className="mb-8">
-        {/* Roll Button */}
-        <div className="mb-8 mt-4">
+        {/* Roll Buttons */}
+        <div className="mb-8 mt-4 flex flex-col items-center gap-3">
           <button
-            onClick={rollDice}
+            onClick={() => rollDice(false)}
             disabled={isRolling || (results.length > 0 && lockedDice.length === diceCount)}
             className="group relative w-80 py-6 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 text-white font-bold text-2xl rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 disabled:scale-100 disabled:opacity-70 transition-all duration-500 border-4 border-white/30 hover:border-white/50"
           >
@@ -116,13 +126,23 @@ const RollInterface = ({
               {isRolling ? 'Kaster...' : 'KAST TERNINGER'}
             </span>
           </button>
+
+          {/* Reset All Button - Only show when there are results */}
+          {results.length > 0 && !isRolling && (
+            <button
+              onClick={() => rollDice(true)}
+              disabled={isRolling}
+              className="px-6 py-2 bg-white/10 backdrop-blur-sm text-white/80 font-medium text-sm rounded-full border border-white/20 hover:bg-white/20 hover:text-white hover:border-white/30 transform hover:scale-105 disabled:scale-100 disabled:opacity-70 transition-all duration-300"
+            >
+              Kast alle på nytt
+            </button>
+          )}
         </div>
 
         {/* Fixed height dice results container */}
         <div className="bg-gradient-to-r from-indigo-900/50 via-purple-900/50 to-pink-900/50 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/20 shadow-2xl min-h-[320px] flex flex-col justify-center">
           {(isRolling || results.length > 0) ? (
             <>
-              
               {/* Adaptive dice area layout */}
               <div className={`gap-4 justify-items-center min-h-[120px] items-center mx-auto ${
                 diceCount === 1 
@@ -218,6 +238,12 @@ const RollInterface = ({
           <span>{diceCount} terninger</span>
           <span>×</span>
           <span>{selectedCustomDice ? selectedCustomDice.name : `d${diceSides}`}</span>
+          {rollCount > 0 && (
+            <>
+              <span>•</span>
+              <span>Kast: {rollCount}</span>
+            </>
+          )}
         </div>
       </div>
     </div>
