@@ -127,16 +127,18 @@ const RollInterface = ({
             </span>
           </button>
 
-          {/* Reset All Button - Only show when there are results */}
-          {results.length > 0 && !isRolling && (
-            <button
-              onClick={() => rollDice(true)}
-              disabled={isRolling}
-              className="px-6 py-2 bg-white/10 backdrop-blur-sm text-white/80 font-medium text-sm rounded-full border border-white/20 hover:bg-white/20 hover:text-white hover:border-white/30 transform hover:scale-105 disabled:scale-100 disabled:opacity-70 transition-all duration-300"
-            >
-              Kast alle på nytt
-            </button>
-          )}
+          {/* Reset All Button - Reserve space to prevent jump */}
+          <div className="h-10">
+            {results.length > 0 && !isRolling && (
+              <button
+                onClick={() => rollDice(true)}
+                disabled={isRolling}
+                className="px-6 py-2 bg-white/10 backdrop-blur-sm text-white/80 font-medium text-sm rounded-full border border-white/20 hover:bg-white/20 hover:text-white hover:border-white/30 transform hover:scale-105 disabled:scale-100 disabled:opacity-70 transition-all duration-300"
+              >
+                Kast alle på nytt
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Fixed height dice results container */}
