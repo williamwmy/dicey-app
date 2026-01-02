@@ -82,7 +82,7 @@ function App() {
     setRollHistory([]);
   };
 
-  const version = "1.3.0";
+  const version = "1.3.1";
 
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
